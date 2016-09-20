@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+//import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     /*In this special version of Tic-Tac-Toe, the X's are represented by a picture
@@ -34,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private int player2WinCounter = 0;
     private int tieCounter = 0;
 
+    //TODO Check for tie games
+    //TODO When game ends
+    //TODO Buttons at the bottom: what are they responsible for?
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     //Image Button Event Handlers
     public void onClickSq1(View view)
     {
+        //Player 1 vs Droid
         if(turnNumber % 2 == 1 && vsDroid)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square1);
@@ -58,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -65,21 +72,47 @@ public class MainActivity extends AppCompatActivity {
                 droidPick();
             }
         }
+        //Two players, player one's turn, check to see if player 1 won, else continue
         else if(turnNumber % 2 == 1 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square1);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) && !player2Wins)
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
+        //Two players, player two's turn, check to see if player 2 won, else continue
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square1);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.curry) && !humanWins)
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
@@ -98,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -110,16 +144,36 @@ public class MainActivity extends AppCompatActivity {
             ImageButton ib = (ImageButton)findViewById(R.id.square2);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron))
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square2);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.curry))
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
@@ -140,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -152,16 +207,40 @@ public class MainActivity extends AppCompatActivity {
             ImageButton ib = (ImageButton)findViewById(R.id.square3);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron))
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square3);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.curry))
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
@@ -180,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -192,16 +272,36 @@ public class MainActivity extends AppCompatActivity {
             ImageButton ib = (ImageButton)findViewById(R.id.square4);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron))
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square4);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.curry))
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
@@ -224,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -236,16 +337,44 @@ public class MainActivity extends AppCompatActivity {
             ImageButton ib = (ImageButton)findViewById(R.id.square5);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron))
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square5);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.curry))
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
@@ -264,6 +393,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -276,16 +406,38 @@ public class MainActivity extends AppCompatActivity {
             ImageButton ib = (ImageButton)findViewById(R.id.square6);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            //Check Tic-Tac-Toe from user's side
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron))
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square6);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            //Check Tic-Tac-Toe from user's side
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.curry))
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
@@ -306,6 +458,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -318,16 +471,40 @@ public class MainActivity extends AppCompatActivity {
             ImageButton ib = (ImageButton)findViewById(R.id.square7);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron))
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square7);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.curry))
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
@@ -346,6 +523,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -358,16 +536,36 @@ public class MainActivity extends AppCompatActivity {
             ImageButton ib = (ImageButton)findViewById(R.id.square8);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron))
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square8);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.curry))
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
@@ -388,6 +586,7 @@ public class MainActivity extends AppCompatActivity {
                             && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron))
             {
                 humanWins = true;
+                humanWinCounter++;
             }
             else
             {
@@ -400,16 +599,40 @@ public class MainActivity extends AppCompatActivity {
             ImageButton ib = (ImageButton)findViewById(R.id.square9);
             ib.setImageResource(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron
+                    && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron) ||
+                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
+                            && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron))
+            {
+                humanWins = true;
+                humanWinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
         else if(turnNumber % 2 == 0 && vsHuman)
         {
             ImageButton ib = (ImageButton)findViewById(R.id.square9);
             ib.setImageResource(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            if((ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.curry
+                    && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.curry) ||
+                    (ib.getTag() == R.drawable.curry && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.curry
+                            && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.curry))
+            {
+                player2Wins = true;
+                player2WinCounter++;
+            }
+            else
+            {
+                turnNumber++;
+            }
         }
     }
 
