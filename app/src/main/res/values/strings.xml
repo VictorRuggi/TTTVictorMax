@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TTTVictorMax</string>
+    <string name="header">NBA Tic Tac Toe</string>
+    <string name="playerOpponentIs">You are playing against the droid</string>
+    <string name="reset">RESET</string>
+    <string name="about">ABOUT</string>
+    <string name="zero">ZERO</string>
+    <string name="scores">SCORES</string>
+    <string name="play">PLAY</string>
+</resources>
