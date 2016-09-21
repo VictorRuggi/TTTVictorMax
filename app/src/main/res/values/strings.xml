@@ -7,4 +7,21 @@
     <string name="zero">ZERO</string>
     <string name="scores">SCORES</string>
     <string name="play">PLAY</string>
+    <string name="humanWins">Human (Player 1) Wins! Click on Reset to play again</string>
+    <string name="droidWins">Droid Wins! Click on Reset to play again</string>
+    <string name="player2Wins">Player 2 Wins! Click on Reset to play again</string>
+    <string name="tieGame">It\'s a tie! Click on Reset to play again</string>
+    <string name="instructions">
+        NOT EVERYONE CAN CLAIM THAT THEY BLOCKED STEPHEN CURRY FROM MAKING A SHOT. WILL YOU DO THE IMPOSSIBLE?\n\n
+        HUMAN vs. DROID GAMEPLAY INSTRUCTIONS\n
+        You are LeBron James (X\'s). You need to stop Stephen Curry (O\'s) from aligning three of his pieces in a row.\n
+        Just like basic tic-tac-toe, whoever gets three pieces in a row horizontally, vertically or diagonally first wins!\n\n
+
+        HUMAN vs. HUMAN GAMEPLAY INSTRUCTIONS\n
+        Player 1 is LeBron, while player 2 is Steph. Settle which basketball superstar is superior once and for all in\n
+        this fun multiplayer game mode!\n\n
+
+        HAVE FUN!
+    </string>
+    <string name="developers">Victor Ruggi &amp; Maximillian Page-Slowik</string>
 </resources>

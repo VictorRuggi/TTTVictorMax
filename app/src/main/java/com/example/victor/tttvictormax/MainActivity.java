@@ -1,11 +1,21 @@
 package com.example.victor.tttvictormax;
 
+import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     /*In this special version of Tic-Tac-Toe, the X's are represented by a picture
@@ -30,426 +40,790 @@ public class MainActivity extends AppCompatActivity {
 
     /*Counters*/
     private int humanWinCounter = 0;
+    private int humanLossCounter = 0;
     private int droidWinCounter = 0;
+    private int droidLossCounter = 0;
     private int player2WinCounter = 0;
-    private int tieCounter = 0;
+    private int player2LossCounter = 0;
+    private int humanTieCounter = 0;
+    private int droidTieCounter = 0;
+    private int player2TieCounter = 0;
+
+    /*ArrayList containing all the ImageButtons*/
+    ArrayList<ImageButton> buttons = new ArrayList<ImageButton>();
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+    //TODO Check for tie games
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Set buttons list to contain all clickable image buttons
+        buttons.add((ImageButton) findViewById(R.id.square1));
+        buttons.add((ImageButton) findViewById(R.id.square2));
+        buttons.add((ImageButton) findViewById(R.id.square3));
+        buttons.add((ImageButton) findViewById(R.id.square4));
+        buttons.add((ImageButton) findViewById(R.id.square5));
+        buttons.add((ImageButton) findViewById(R.id.square6));
+        buttons.add((ImageButton) findViewById(R.id.square7));
+        buttons.add((ImageButton) findViewById(R.id.square8));
+        buttons.add((ImageButton) findViewById(R.id.square9));
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     //Image Button Event Handlers
-    public void onClickSq1(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square1);
+    public void onClickSq1(View view) {
+        //Player 1 vs Droid
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square1);
             ib.setImageResource(R.drawable.lebron);
             ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
         }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square1);
+        //Two players, player one's turn, check to see if player 1 won, else continue
+        else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square1);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square1);
+        //Two players, player two's turn, check to see if player 2 won, else continue
+        else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square1);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Image Button Event Handlers
-    public void onClickSq2(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square2);
+    public void onClickSq2(View view) {
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square2);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
-        }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square2);
+        } else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square2);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
-        }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square2);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
+        } else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square2);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Image Button Event Handlers
-    public void onClickSq3(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square3);
+    public void onClickSq3(View view) {
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square3);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
-        }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square3);
+        } else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square3);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
-        }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square3);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
+        } else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square3);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Image Button Event Handlers
-    public void onClickSq4(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square4);
+    public void onClickSq4(View view) {
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square4);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
-        }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square4);
+        } else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square4);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
-        }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square4);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
+        } else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square4);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Image Button Event Handlers
-    public void onClickSq5(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square5);
+    public void onClickSq5(View view) {
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square5);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
-        }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square5);
+        } else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square5);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
-        }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square5);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
+        } else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square5);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Image Button Event Handlers
-    public void onClickSq6(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square6);
+    public void onClickSq6(View view) {
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square6);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
-        }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square6);
+        } else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square6);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
-        }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square6);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            //Check Tic-Tac-Toe from user's side
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
+        } else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square6);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            //Check Tic-Tac-Toe from user's side
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Image Button Event Handlers
-    public void onClickSq7(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square7);
+    public void onClickSq7(View view) {
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square7);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square4)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
-        }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square7);
+        } else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square7);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
-        }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square7);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
+        } else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square7);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Image Button Event Handlers
-    public void onClickSq8(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square8);
+    public void onClickSq8(View view) {
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square8);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square9)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square2)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
-        }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square8);
+        } else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square8);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
-        }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square8);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
+        } else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square8);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Image Button Event Handlers
-    public void onClickSq9(View view)
-    {
-        if(turnNumber % 2 == 1 && vsDroid)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square9);
+    public void onClickSq9(View view) {
+        if (turnNumber % 2 == 1 && vsDroid) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square9);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
             //Check Tic-Tac-Toe from user's side
-            if((ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square8)).getTag() == R.drawable.lebron
-                    && ((ImageButton)findViewById(R.id.square7)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square6)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square3)).getTag() == R.drawable.lebron) ||
-                    (ib.getTag() == R.drawable.lebron && ((ImageButton)findViewById(R.id.square5)).getTag() == R.drawable.lebron
-                            && ((ImageButton)findViewById(R.id.square1)).getTag() == R.drawable.lebron))
-            {
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)) && !droidWins) {
                 humanWins = true;
-            }
-            else
-            {
+                humanWinCounter++;
+                droidLossCounter++;
+                gameOver();
+            } else {
                 turnNumber++;
                 droidPick();
             }
-        }
-        else if(turnNumber % 2 == 1 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square9);
+        } else if (turnNumber % 2 == 1 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square9);
             ib.setImageResource(R.drawable.lebron);
+            ib.setTag(R.drawable.lebron);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
-        }
-        else if(turnNumber % 2 == 0 && vsHuman)
-        {
-            ImageButton ib = (ImageButton)findViewById(R.id.square9);
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.lebron)
+                    && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.lebron)) ||
+                    (ib.getTag().equals(R.drawable.lebron) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.lebron)
+                            && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.lebron)) && !player2Wins) {
+                humanWins = true;
+                humanWinCounter++;
+                player2LossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
+        } else if (turnNumber % 2 == 0 && vsHuman) {
+            ImageButton ib = (ImageButton) findViewById(R.id.square9);
             ib.setImageResource(R.drawable.curry);
+            ib.setTag(R.drawable.curry);
             ib.setClickable(false);
-            //TODO: Check Tic-Tac-Toe
-            turnNumber++;
+            buttons.remove(ib); //Once a square is picked, it is removed from the list of possible playable squares.
+            if ((ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.curry)
+                    && ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry)) ||
+                    (ib.getTag().equals(R.drawable.curry) && ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry)
+                            && ((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry)) && !humanWins) {
+                player2Wins = true;
+                player2WinCounter++;
+                humanLossCounter++;
+                gameOver();
+            } else {
+                turnNumber++;
+            }
         }
     }
 
     //Droid's turn
-    public void droidPick()
-    {
+    //The droid plays as Stephen Curry
+    public void droidPick() {
+        int rnd = (int) (Math.random() * buttons.size());
+        ImageButton ib = buttons.get(rnd);
+        ib.setImageResource(R.drawable.curry);
+        ib.setTag(R.drawable.curry);
+        ib.setClickable(false);
+        buttons.remove(ib);
+
+        //Check for all possible Tic-Tac-Toe winning formulas
+        if (((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry)) {
+            droidWins = true;
+            droidWinCounter++;
+            humanLossCounter++;
+            gameOver();
+        } else if (((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.curry)) {
+            droidWins = true;
+            droidWinCounter++;
+            humanLossCounter++;
+            gameOver();
+        } else if (((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) {
+            droidWins = true;
+            droidWinCounter++;
+            humanLossCounter++;
+            gameOver();
+        } else if (((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square4)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry)) {
+            droidWins = true;
+            droidWinCounter++;
+            humanLossCounter++;
+            gameOver();
+        } else if (((ImageButton) findViewById(R.id.square2)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square8)).getTag().equals(R.drawable.curry)) {
+            droidWins = true;
+            droidWinCounter++;
+            humanLossCounter++;
+            gameOver();
+        } else if (((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square6)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) {
+            droidWins = true;
+            droidWinCounter++;
+            humanLossCounter++;
+            gameOver();
+        } else if (((ImageButton) findViewById(R.id.square1)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square9)).getTag().equals(R.drawable.curry)) {
+            droidWins = true;
+            droidWinCounter++;
+            humanLossCounter++;
+            gameOver();
+        } else if (((ImageButton) findViewById(R.id.square3)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square5)).getTag().equals(R.drawable.curry) &&
+                ((ImageButton) findViewById(R.id.square7)).getTag().equals(R.drawable.curry)) {
+            droidWins = true;
+            droidWinCounter++;
+            humanLossCounter++;
+            gameOver();
+        } else if (turnNumber == 9 && !humanWins && !droidWins) {
+            humanTieCounter++;
+            droidTieCounter++;
+            gameOver();
+        }
 
     }
 
-    //Event Handlers
-    public void onResetClick(View view)
-    {
+    //When game is over
+    public void gameOver() {
+        Toast message;
+        for (int i = 0; i < buttons.size(); i++) {
+            //Disable the buttons
+            buttons.get(i).setClickable(false);
+        }
 
-    }
-
-    //Event Handlers
-    public void onAboutClick(View view)
-    {
-
-    }
-
-    //Event Handlers
-    public void onZeroClick(View view)
-    {
-
-    }
-
-    //Event Handlers
-    public void onScoresClick(View view)
-    {
-
-    }
-
-    //Event Handlers
-    public void onPlayClick(View view)
-    {
-        TextView t = (TextView)findViewById(R.id.playerOpponentIs);
-        if(t.getText().equals("You are playing against the droid"))
+        // Checks to see if human player won, whether gameplay was against droid or another human.
+        // When the user is playing another human, droidWins will always be false.
+        if (humanWins && !droidWins && !player2Wins) {
+            message = Toast.makeText(this, R.string.humanWins, Toast.LENGTH_SHORT);
+            message.show();
+        } else if (!humanWins && droidWins) {
+            message = Toast.makeText(this, R.string.droidWins, Toast.LENGTH_SHORT);
+            message.show();
+        } else if (!humanWins && player2Wins) {
+            message = Toast.makeText(this, R.string.player2Wins, Toast.LENGTH_SHORT);
+            message.show();
+        } else if (!humanWins && !droidWins && !player2Wins) //No winners. When the user is playing the droid, player2Wins is set to false.
         {
-            //TODO: Clear the board
+            message = Toast.makeText(this, R.string.tieGame, Toast.LENGTH_SHORT);
+            message.show();
+        }
+    }
+
+    //Event Handlers
+    public void onResetClick(View view) {
+        //Clear image buttons list, then put them back
+        buttons.clear();
+        buttons.add((ImageButton) findViewById(R.id.square1));
+        buttons.add((ImageButton) findViewById(R.id.square2));
+        buttons.add((ImageButton) findViewById(R.id.square3));
+        buttons.add((ImageButton) findViewById(R.id.square4));
+        buttons.add((ImageButton) findViewById(R.id.square5));
+        buttons.add((ImageButton) findViewById(R.id.square6));
+        buttons.add((ImageButton) findViewById(R.id.square7));
+        buttons.add((ImageButton) findViewById(R.id.square8));
+        buttons.add((ImageButton) findViewById(R.id.square9));
+
+        for (int i = 0; i < buttons.size(); i++) {
+            buttons.get(i).setClickable(true);
+            buttons.get(i).setImageResource(R.drawable.basketball);
+            buttons.get(i).setTag(R.drawable.basketball);
+        }
+
+        turnNumber = 1; //Starts a new game
+        /*
+        * These three variables below must be set to false in order for gameplay to occur.
+        */
+        humanWins = false;
+        droidWins = false;
+        player2Wins = false;
+    }
+
+    //Event Handlers
+    public void onAboutClick(View view) {
+        Intent intent = new Intent(this, AboutMessageActivity.class);
+        //TODO (for Max): Ensure state is saved
+    }
+
+    //Event Handlers
+    public void onZeroClick(View view) {
+        /*Reset the counters*/
+        humanWinCounter = 0;
+        droidWinCounter = 0;
+        player2WinCounter = 0;
+        humanTieCounter = 0;
+        droidTieCounter = 0;
+        player2TieCounter = 0;
+        humanLossCounter = 0;
+        droidLossCounter = 0;
+        player2LossCounter = 0;
+
+        //TODO (for Max): Save the counters in SharedPreferences
+    }
+
+    //Event Handlers
+    public void onScoresClick(View view) {
+        //TODO (for Max): Ensure state is saved
+    }
+
+    //Event Handlers
+    public void onPlayClick(View view) {
+        TextView t = (TextView) findViewById(R.id.playerOpponentIs);
+        if (t.getText().equals("You are playing against the droid")) //This is one of two possible values that the TextView could have. It is the default
+        {
+            //Clear image buttons list, then put them back
+            buttons.clear();
+            buttons.add((ImageButton) findViewById(R.id.square1));
+            buttons.add((ImageButton) findViewById(R.id.square2));
+            buttons.add((ImageButton) findViewById(R.id.square3));
+            buttons.add((ImageButton) findViewById(R.id.square4));
+            buttons.add((ImageButton) findViewById(R.id.square5));
+            buttons.add((ImageButton) findViewById(R.id.square6));
+            buttons.add((ImageButton) findViewById(R.id.square7));
+            buttons.add((ImageButton) findViewById(R.id.square8));
+            buttons.add((ImageButton) findViewById(R.id.square9));
+
+            for (int i = 0; i < buttons.size(); i++) {
+                buttons.get(i).setClickable(true);
+                buttons.get(i).setImageResource(R.drawable.basketball);
+                buttons.get(i).setTag(R.drawable.basketball);
+            }
+
             t.setText("You are playing against a human");
             vsHuman = true;
             vsDroid = false;
@@ -457,10 +831,24 @@ public class MainActivity extends AppCompatActivity {
             droidWins = false;
             player2Wins = false;
             turnNumber = 1; //Reset the turn number
-        }
-        else
-        {
-            //TODO: Clear the board
+        } else {
+            //Clear image buttons list, then put them back
+            buttons.clear();
+            buttons.add((ImageButton) findViewById(R.id.square1));
+            buttons.add((ImageButton) findViewById(R.id.square2));
+            buttons.add((ImageButton) findViewById(R.id.square3));
+            buttons.add((ImageButton) findViewById(R.id.square4));
+            buttons.add((ImageButton) findViewById(R.id.square5));
+            buttons.add((ImageButton) findViewById(R.id.square6));
+            buttons.add((ImageButton) findViewById(R.id.square7));
+            buttons.add((ImageButton) findViewById(R.id.square8));
+            buttons.add((ImageButton) findViewById(R.id.square9));
+
+            for (int i = 0; i < buttons.size(); i++) {
+                buttons.get(i).setClickable(true);
+                buttons.get(i).setImageResource(R.drawable.basketball);
+                buttons.get(i).setTag(R.drawable.basketball);
+            }
             t.setText("You are playing against the droid");
             vsDroid = true;
             vsHuman = false;
@@ -469,5 +857,45 @@ public class MainActivity extends AppCompatActivity {
             player2Wins = false;
             turnNumber = 1; //Reset the turn number
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.victor.tttvictormax/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.victor.tttvictormax/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }
