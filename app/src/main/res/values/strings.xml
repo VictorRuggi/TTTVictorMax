@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">TTTVictorMax</string>
     <string name="header">NBA Tic Tac Toe</string>
-    <string name="playerOpponentIs">You are playing against the droid</string>
+    <string name="playerOpponentIsDroid">You are playing against the droid</string>
+    <string name="playerOpponentIsHuman">You are playing against a human</string>
     <string name="reset">RESET</string>
     <string name="about">ABOUT</string>
     <string name="zero">ZERO</string>
@@ -23,5 +24,6 @@
 
         HAVE FUN!
     </string>
+    <string name="scoresText" id="scoresText">Human Wins:%1$d\nHuman Losses:%2$d\nHuman Ties:%3$d\nDroid Wins:%4$d\nDroid Losses:%5$d\nDroid Ties:%6$d\nPlayer2 Wins:%7$d\nPlayer2 Losses:%8$d\nPlayer2 Ties:%9$d</string>
     <string name="developers">Victor Ruggi &amp; Maximillian Page-Slowik</string>
 </resources>

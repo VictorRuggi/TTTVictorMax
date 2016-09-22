@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">TTTVictorMax</string>
+    <string name="header">Le Tic Tac Toe de la NBA</string>
+    <string name="playerOpponentIsDroid">Vous jouez contre l\'androïde</string>
+    <string name="playerOpponentIsHuman">Vous jouez contre un humain</string>
+    <string name="reset">REMETTRE</string>
+    <string name="about">À PROPOS</string>
+    <string name="zero">ZÉRO</string>
+    <string name="scores">SCORES</string>
+    <string name="play">JOUER</string>
+    <string name="humanWins">L\'humain (joueur 1) a gagné! Appuyez sur Remettre pour jouer encore</string>
+    <string name="droidWins">L\'androïde a gagné! Appuyez sur Remettre pour jouer encore</string>
+    <string name="player2Wins">Joueur 2 a gagné! Appuyez sur Remettre pour jouer encore</string>
+    <string name="tieGame">C\'est un match nul! Appuyez sur Remettre pour jouer encore</string>
+    <string name="instructions">
+        CE N\'EST PAS TOUT LE MONDE QUI PEUT DIRE QU\'ILS ONT BLOQUÉ STEPHEN CURRY DE RÉUSSIR UN COUP. POUVEZ-VOUS FAIRE L\'IMPOSSIBLE?\n\n
+        INSTRUCTIONS HUMAIN CONTRE ANDROÏDE\n
+        Vous êtes LeBron James (les X). Vous devez empêcher Stephen Curry (les O) d\'aligner ses pièces trois fois de suite.\n
+        Comme le tic tac toe de base, le premier qui a trois de ses pièces de façon horizontale, verticale ou diagonale remporte!\n\n
+
+        INSTRUCTIONS HUMAIN CONTRE HUMAIN\n
+        Le premier joueur est LeBron, tandis que le deuxième joueur est Steph. Réglez une fois pour toutes le débat de qui est le super-étoile du basketball supérieur dans cette mode de jeu multijoueur et amusante!
+
+        AMUSEZ-VOUS!
+    </string>
+    <string name="scoresText" id="scoresText">Victoires humain:%1$d\nDéfaites humain:%2$d\nNuls humain:%3$d\nVictoires androïde:%4$d\nDéfaites androïde:%5$d\nNuls androïde:%6$d\nVictoires joueur 2:%7$d\nDéfaites joueur 2:%8$d\nNuls joueur 2:%9$d</string>
+    <string name="developers">Victor Ruggi &amp; Maximillian Page-Slowik</string>
+</resources>

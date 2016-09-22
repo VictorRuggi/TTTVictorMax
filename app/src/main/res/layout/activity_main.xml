@@ -118,9 +118,9 @@
     <TextView
         android:layout_width="140dp"
         android:layout_height="30dp"
-        android:text="@string/playerOpponentIs"
+        android:text="@string/playerOpponentIsDroid"
         android:textColor="#ffdd00"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:layout_gravity="center"
         android:layout_weight="6.60"
         android:layout_alignParentBottom="true"
@@ -128,7 +128,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/playerOpponentIs" />
+        android:id="@+id/playerOpponentIsDroid" />
 
     <LinearLayout
         android:layout_width="400dp"
@@ -137,26 +137,26 @@
         android:id="@+id/linearLayout">
 
         <Button
-            android:layout_width="60dp"
+            android:layout_width="75dp"
             android:layout_height="34dp"
             android:text="@string/reset"
             android:id="@+id/resetButton"
             android:layout_marginBottom="48dp"
             android:layout_marginRight="6dp"
             android:background="#ffea00"
-            android:textSize="18dp"
+            android:textSize="12sp"
             android:onClick="onResetClick"
             android:visibility="visible" />
 
         <Button
-            android:layout_width="60dp"
+            android:layout_width="75dp"
             android:layout_height="34dp"
             android:text="@string/about"
             android:id="@+id/aboutButton"
             android:layout_marginBottom="48dp"
             android:layout_marginRight="6dp"
             android:background="#ffea00"
-            android:textSize="18dp"
+            android:textSize="12sp"
             android:onClick="onAboutClick" />
 
         <Button
@@ -167,32 +167,46 @@
             android:layout_marginBottom="48dp"
             android:layout_marginRight="6dp"
             android:background="#ffea00"
-            android:textSize="18dp"
+            android:textSize="12sp"
             android:onClick="onZeroClick" />
 
         <Button
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="34dp"
             android:text="@string/scores"
             android:id="@+id/scoresButton"
             android:layout_marginBottom="48dp"
             android:layout_marginRight="6dp"
             android:background="#ffea00"
-            android:textSize="18dp"
+            android:textSize="12sp"
             android:onClick="onScoresClick" />
 
         <Button
-            android:layout_width="70dp"
+            android:layout_width="60dp"
             android:layout_height="34dp"
             android:text="@string/play"
             android:id="@+id/playButton"
             android:background="#ffea00"
-            android:textSize="21.5dp"
+            android:textSize="12sp"
             android:onClick="onPlayClick"
             android:layout_alignParentBottom="true"
             android:layout_alignRight="@+id/square9"
             android:layout_alignEnd="@+id/square9" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playerOpponentIsHuman"
+        android:id="@+id/playerOpponentIsHuman"
+        android:textColor="#ffdd00"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        android:layout_below="@+id/header"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
